@@ -74,4 +74,16 @@ class Solution {
 }
 
 
+Time Complexity (TC)
+------------------------------------------
+O(V + E)
+V → number of vertices
+E → number of edges
+Each node and edge is visited once.
 
+  
+Space Complexity (SC)
+------------------------------------------
+O(V)
+  Visited array
+  Queue storing vertices
