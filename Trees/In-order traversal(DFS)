@@ -1,0 +1,49 @@
+#Inorder traversal 
+    Order: Left → Root → Right
+
+Using Recursion
+
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        inorder(root, res);
+        return res;
+    }
+
+    void inorder(TreeNode node, List<Integer> res) {
+        if (node == null) return;
+        inorder(node.left, res);    // LEFT
+        res.add(node.val);          // ROOT
+        inorder(node.right, res);   // RIGHT
+    }
+}
+
+Iterative approach using stack 
+
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+
+        while (curr != null || !stack.isEmpty()) {
+            while (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            }
+            curr = stack.pop();
+            res.add(curr.val);     // ROOT
+            curr = curr.right;
+        }
+
+        return res;
+    }
+}
+
+-------------------------------------------------------------------
+Complexity
+
+Time: O(n)
+Space: O(h) (stack)
+--------------------------------------------------------------------
+“Inorder traversal visits Left subtree first, then Root, then Right subtree. Iterative version uses a stack to mimic recursion.”
