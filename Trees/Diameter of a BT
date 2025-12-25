@@ -1,0 +1,41 @@
+Leetcode 543.Diameter of a binary tree 
+
+Given the root of a binary tree, return the length of the diameter of the tree.
+The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+The length of a path between two nodes is represented by the number of edges between them.
+
+At every node, the longest path passing through that node is:
+        leftHeight + rightHeight
+The maximum of this over all nodes is the diameter.
+
+Optimal DFS Solution (One Traversal)
+
+class Solution {
+    int diameter = 0;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        height(root);
+        return diameter;
+    }
+
+    int height(TreeNode node) {
+        if (node == null) return 0;
+
+        int left = height(node.left);
+        int right = height(node.right);
+
+        // Update diameter at this node
+        diameter = Math.max(diameter, left + right);
+
+        // Return height
+        return 1 + Math.max(left, right);
+    }
+}
+
+---------------------------------
+Complexity
+
+Time: O(n)
+Space: O(h) (recursion stack)
+----------------------------------
+
