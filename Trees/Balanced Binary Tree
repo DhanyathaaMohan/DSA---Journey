@@ -1,0 +1,41 @@
+Leetcode 110. Balanced Binary Tree
+
+Given a binary tree, determine if it is height-balanced.
+A height-balanced binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one.
+
+At each node:
+  Compute height of left subtree
+  Compute height of right subtree
+  Check height difference ≤ 1
+If any node violates this → tree is NOT balanced 
+
+Optimal Recursive Solution (Bottom-Up)
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        return height(root) != -1;
+    }
+
+    int height(TreeNode node) {
+        if (node == null) return 0;
+
+        int left = height(node.left);
+        if (left == -1) return -1;
+
+        int right = height(node.right);
+        if (right == -1) return -1;
+
+        if (Math.abs(left - right) > 1)
+            return -1;
+
+        return 1 + Math.max(left, right);
+    }
+}
+
+--------------------------------
+Complexity
+
+Time: O(n)
+Space: O(h) (recursion stack)
+--------------------------------
+
+
