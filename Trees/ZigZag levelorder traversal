@@ -1,0 +1,63 @@
+Leetcode 103. Binary Tree Zigzag Level Order Traversal 
+
+Given the root of a binary tree, return the zigzag level order traversal of its nodes' values. (i.e., from left to right, then right to left for the next level and alternate between).
+
+Order:
+  Level 0 → Left to Right
+  Level 1 → Right to Left
+  Level 2 → Left to Right … and so on
+  This is Level Order (BFS) + direction change
+
+BFS + Direction flag 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        
+        List<List<Integer>>ans = new ArrayList<>();
+        if (root == null) 
+            return ans;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        boolean leftToRight = true;
+        while(!q.isEmpty())
+        {
+            int size = q.size();
+            List<Integer> lvl = new ArrayList<>();
+            for(int i=0;i<size;i++){
+                 TreeNode node = q.poll();
+                if(leftToRight)
+                    lvl.add(node.val);
+                else
+                    lvl.add(0,node.val);
+                if(node.left!=null)
+                    q.add(node.left);
+                if(node.right!=null)
+                    q.add(node.right);
+            }
+            ans.add(lvl);
+            leftToRight = !leftToRight;
+        }
+        return ans;
+       }
+}
+
+------------------------------
+Complexity
+
+Time: O(n)
+Space: O(n)
+------------------------------
