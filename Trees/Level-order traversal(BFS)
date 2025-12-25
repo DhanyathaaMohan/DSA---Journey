@@ -1,0 +1,35 @@
+Level order traversal 
+
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) return res;
+
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+
+        while (!q.isEmpty()) {
+            int size = q.size();   // nodes in current level
+            List<Integer> level = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode curr = q.poll();
+                level.add(curr.val);
+
+                if (curr.left != null)
+                    q.offer(curr.left);
+                if (curr.right != null)
+                    q.offer(curr.right);
+            }
+            res.add(level);
+        }
+        return res;
+    }
+}
+
+---------------------------------------
+Complexity
+
+Time: O(n)
+Space: O(n) (queue in worst case)
+---------------------------------------
