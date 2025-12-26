@@ -1,0 +1,43 @@
+Leetcode 199.Binary Tree Right Side View 
+
+Given the root of a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+
+Solution
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    List<Integer> result = new ArrayList<>();
+    public void preorder(TreeNode root,int row){
+        if(root!=null){
+            if(result.size()==row)
+                result.add(root.val);
+            preorder(root.right,row+1);
+            preorder(root.left,row+1);
+        }
+    }
+    public List<Integer> rightSideView(TreeNode root) {
+        preorder(root,0);
+        return result;
+    }
+}
+
+--------------------------
+Complexity 
+
+Time	O(N)
+Space	O(N)
+--------------------------
