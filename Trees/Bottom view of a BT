@@ -1,0 +1,55 @@
+Bottom View of Binary Tree 
+
+You are given the root of a binary tree, and your task is to return its bottom view. The bottom view of a binary tree is the set of nodes visible when the tree is viewed from the bottom.
+Note:
+If there are multiple bottom-most nodes for a horizontal distance from the root, then the latter one in the level order traversal is considered.
+
+Solution
+
+/*
+class Node {
+    int data;
+    Node left, right;
+
+    Node(int val) {
+        this.data = val;
+        this.left = null;
+        this.right = null;
+    }
+}
+*/
+class Solution {
+    int max_col = 0;
+    int min_col = 0;
+    public void preorder(Node root,int row,int col,HashMap<Integer,int[]> mp)
+    {
+        if(root!=null)
+        {
+            if(!mp.containsKey(col) || row >= mp.get(col)[1])
+                mp.put(col,new int[]{root.data,row});
+            if(col>max_col)
+                max_col = col;
+            if(col<min_col)
+                min_col = col;
+            preorder(root.left,row+1,col-1,mp);
+            preorder(root.right,row+1,col+1,mp);
+        }
+        
+    }
+    public ArrayList<Integer> bottomView(Node root) {
+        // code here
+        HashMap<Integer,int[]> mp = new HashMap<>();
+        preorder(root,0,0,mp);
+        ArrayList<Integer> result = new ArrayList<>();
+        for(int i=min_col;i<=max_col;i++)
+            result.add(mp.get(i)[0]);
+        return result;
+    }
+}
+
+-----------------------------------
+Complexity
+
+Time	O(N)
+Space	O(N)
+-----------------------------------
