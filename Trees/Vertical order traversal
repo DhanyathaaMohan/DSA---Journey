@@ -1,0 +1,126 @@
+Leetcode 987.Vertical Order Traversal of a Binary Tree 
+
+Given the root of a binary tree, calculate the vertical order traversal of the binary tree.
+For each node at position (row, col), its left and right children will be at positions (row + 1, col - 1) and (row + 1, col + 1) respectively. The root of the tree is at (0, 0).
+The vertical order traversal of a binary tree is a list of top-to-bottom orderings for each column index starting from the leftmost column and ending on the rightmost column. There may be multiple nodes in the same row and same column. In such a case, sort these nodes by their values.
+Return the vertical order traversal of the binary tree.
+
+Using DFS 
+
+class Solution {
+
+    public void preorder(TreeNode root, int row, int col, ArrayList<int[]> nodes) {
+        if (root == null) return;
+
+        nodes.add(new int[]{row, col, root.val});
+        preorder(root.left, row + 1, col - 1, nodes);
+        preorder(root.right, row + 1, col + 1, nodes);
+    }
+
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) return result;
+
+        ArrayList<int[]> nodes = new ArrayList<>();
+        preorder(root, 0, 0, nodes);
+
+        // Sort: col → row → value
+        nodes.sort((a, b) -> {
+            if (a[1] != b[1])
+                return Integer.compare(a[1], b[1]);
+            if (a[0] != b[0])
+                return Integer.compare(a[0], b[0]);
+            return Integer.compare(a[2], b[2]);
+        });
+
+        int prevCol = Integer.MIN_VALUE;
+        List<Integer> level = new ArrayList<>();
+
+        for (int[] node : nodes) {
+            if (node[1] != prevCol) {
+                if (prevCol != Integer.MIN_VALUE)
+                    result.add(level);
+                level = new ArrayList<>();
+                prevCol = node[1];
+            }
+            level.add(node[2]);
+        }
+
+        result.add(level);
+        return result;
+    }
+}
+
+Using BFS 
+
+class Solution {
+
+    static class Tuple {
+        TreeNode node;
+        int row, col;
+
+        Tuple(TreeNode n, int r, int c) {
+            node = n;
+            row = r;
+            col = c;
+        }
+    }
+
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) return result;
+
+        List<int[]> nodes = new ArrayList<>();
+        Queue<Tuple> q = new LinkedList<>();
+
+        // start BFS
+        q.add(new Tuple(root, 0, 0));
+
+        while (!q.isEmpty()) {
+            Tuple t = q.poll();
+            TreeNode curr = t.node;
+            int row = t.row;
+            int col = t.col;
+
+            nodes.add(new int[]{row, col, curr.val});
+
+            if (curr.left != null)
+                q.add(new Tuple(curr.left, row + 1, col - 1));
+
+            if (curr.right != null)
+                q.add(new Tuple(curr.right, row + 1, col + 1));
+        }
+
+        // Sort: column → row → value
+        nodes.sort((a, b) -> {
+            if (a[1] != b[1])
+                return Integer.compare(a[1], b[1]);
+            if (a[0] != b[0])
+                return Integer.compare(a[0], b[0]);
+            return Integer.compare(a[2], b[2]);
+        });
+
+        int prevCol = Integer.MIN_VALUE;
+        List<Integer> level = new ArrayList<>();
+
+        for (int[] node : nodes) {
+            if (node[1] != prevCol) {
+                if (prevCol != Integer.MIN_VALUE)
+                    result.add(level);
+                level = new ArrayList<>();
+                prevCol = node[1];
+            }
+            level.add(node[2]);
+        }
+
+        result.add(level);
+        return result;
+    }
+}
+
+---------------------------
+Complexity
+
+Time	O(N log N)
+Space	O(N)
+---------------------------
