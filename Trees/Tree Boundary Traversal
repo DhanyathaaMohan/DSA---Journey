@@ -1,0 +1,82 @@
+Tree Boundary Traversal 
+
+Given a root of a Binary Tree, return its boundary traversal in the following order:
+Left Boundary: Nodes from the root to the leftmost non-leaf node, preferring the left child over the right and excluding leaves.
+Leaf Nodes: All leaf nodes from left to right, covering every leaf in the tree.
+Reverse Right Boundary: Nodes from the root to the rightmost non-leaf node, preferring the right child over the left, excluding leaves, and added in reverse order.
+
+Note: The root is included once, leaves are added separately to avoid repetition, and the right boundary follows traversal preference not the path from the rightmost leaf.
+
+Optimized solution 
+
+/*
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(int d) {
+        data = d;
+        left = right = null;
+    }
+}
+*/
+
+	
+class Solution {
+    ArrayList<Integer> res = new ArrayList<>();
+    
+    ArrayList<Integer> boundaryTraversal(Node root) {
+        if (root == null) 
+            return res;
+        if (!isLeaf(root))
+            res.add(root.data);
+        leftBoundary(root.left);
+        leafBoundary(root);
+        rightBoundary(root.right);
+        return res;
+    }
+    boolean isLeaf(Node node) {
+        return node!=null && node.left==null && node.right==null;
+    }
+    void leftBoundary(Node node) {
+        while (node!=null) {
+            if(!isLeaf(node))
+                res.add(node.data);
+            if(node.left!=null)
+                node=node.left;
+            else
+                node=node.right;
+        }
+    }
+    void rightBoundary(Node node) {
+        ArrayList<Integer> temp = new ArrayList<>();
+        while (node!=null) {
+            if (!isLeaf(node))
+                temp.add(node.data);
+            if (node.right != null)
+                node=node.right;
+            else
+                node=node.left;
+        }
+        for (int i=temp.size()-1;i>=0;i--)
+            res.add(temp.get(i));
+    }
+    void leafBoundary(Node node){
+        if (node == null) 
+            return;
+        if (isLeaf(node)) {
+            res.add(node.data);
+            return;
+        }
+        leafBoundary(node.left);
+        leafBoundary(node.right);
+    }
+}
+
+--------------------------------------------
+Time & Space Complexity
+⏱ Time
+O(N) → every node visited once
+📦 Space
+O(N) (recursion + result list)
+--------------------------------------------
