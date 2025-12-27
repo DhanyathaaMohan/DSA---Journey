@@ -1,0 +1,43 @@
+Leetcode 547.Number of Provinces 
+
+There are n cities. Some of them are connected, while some are not. If city a is connected directly with city b, and city b is connected directly with city c, then city a is connected indirectly with city c.
+A province is a group of directly or indirectly connected cities and no other cities outside of the group.
+You are given an n x n matrix isConnected where isConnected[i][j] = 1 if the ith city and the jth city are directly connected, and isConnected[i][j] = 0 otherwise.
+Return the total number of provinces.
+
+Solution 
+
+class Solution {
+    public void bfs(int[][] isConnected , boolean vis[],int v)
+    {
+        Queue<Integer> q = new LinkedList<>();
+        q.add(v);
+        vis[v]=true;
+        while(!q.isEmpty())
+        {
+            int x = q.poll();
+            for(int i=0;i<isConnected.length;i++)
+            {
+                if(isConnected[x][i]==1 && !vis[i])
+                {
+                    q.add(i);
+                    vis[i] = true;
+                }
+
+            }
+        }
+    }
+    public int findCircleNum(int[][] isConnected) {
+        boolean[] vis = new boolean[isConnected.length];
+        int provinces = 0;
+        for(int v=0;v<isConnected.length;v++)
+        {
+            if(!vis[v])
+            {
+                provinces++;
+                bfs(isConnected,vis,v);
+            }
+        }
+        return provinces;
+    }
+}
