@@ -1,0 +1,34 @@
+Leetcode 733.Flood Fill 
+
+You are given an image represented by an m x n grid of integers image, where image[i][j] represents the pixel value of the image. You are also given three integers sr, sc, and color. Your task is to perform a flood fill on the image starting from the pixel image[sr][sc].
+To perform a flood fill:
+Begin with the starting pixel and change its color to color.
+Perform the same process for each pixel that is directly adjacent (pixels that share a side with the original pixel, either horizontally or vertically) and shares the same color as the starting pixel.
+Keep repeating this process by checking neighboring pixels of the updated pixels and modifying their color if it matches the original color of the starting pixel.
+The process stops when there are no more adjacent pixels of the original color to update.
+Return the modified image after performing the flood fill.
+
+Solution 
+
+class Solution {
+    int dx[] = {-1,0,1,0};
+    int dy[] = {0,-1,0,1};
+    public void dfs(int[][] image,int r , int c , int initial_color,int color)
+    {   
+        image[r][c]=color;
+        for(int i=0;i<4;i++)
+        {
+            if(r+dx[i]>=0 && r+dx[i]<image.length && c+dy[i]>=0 && c+dy[i]<image[0].length && image[r+dx[i]][c+dy[i]]==initial_color)
+            {
+                dfs(image,r+dx[i],c+dy[i],initial_color,color);
+            }
+        }
+    }
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        int initial_color = image[sr][sc];
+        if(initial_color!=color)
+            dfs(image,sr,sc,initial_color,color);
+        return image;
+    }
+}
+ 
