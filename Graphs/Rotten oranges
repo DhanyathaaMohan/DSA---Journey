@@ -1,0 +1,52 @@
+Leetcode 994.Rotting Oranges 
+
+You are given an m x n grid where each cell can have one of three values:
+
+0 representing an empty cell,
+1 representing a fresh orange, or
+2 representing a rotten orange.
+Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
+
+Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
+
+Solution
+import java.util.*;
+
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        int row = grid.length;
+        int col = grid[0].length;
+        Queue<int[]> q = new ArrayDeque<>();
+        int fresh = 0;
+        for (int r = 0; r < row; r++) {
+            for (int c = 0; c < col; c++) {
+                if (grid[r][c] == 2) {
+                    q.add(new int[]{r, c, 0}); // row, col, time
+                } else if (grid[r][c] == 1) {
+                    fresh++;
+                }
+            }
+        }
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, 1, 0, -1};
+        int time = 0;
+        while (!q.isEmpty()) {
+            int[] curr = q.poll();
+            int i = curr[0];
+            int j = curr[1];
+            int t = curr[2];
+            time = Math.max(time, t);
+            for (int k = 0; k < 4; k++) {
+                int ni = i + dx[k];
+                int nj = j + dy[k];
+                if (ni >= 0 && nj >= 0 && ni < row && nj < col && grid[ni][nj] == 1) {
+                    grid[ni][nj] = 2;
+                    fresh--;
+                    q.add(new int[]{ni, nj, t + 1});
+                }
+            }
+        }
+        return fresh == 0 ? time : -1;
+    }
+}
+
