@@ -1,0 +1,70 @@
+Topological Sorting 
+
+Topological Sort is a linear ordering of vertices in a Directed Acyclic Graph (DAG) such that:
+  For every directed edge u → v, u appears before v in the ordering.
+
+When is Topological Sort possible?
+✔️ Only for Directed Acyclic Graphs (DAG)
+❌ Not possible if the graph has a cycle
+
+Algorithm Steps
+
+Create Adjacency List
+Initialize an array of V empty lists
+For each edge (u, v), add v to adjacency list of u
+Initialize Visited Array
+Create a boolean array vis[V] initialized to false
+Create an empty list topo to store nodes
+Perform DFS for Each Vertex
+For every vertex i from 0 to V-1
+If vis[i] is false, call dfs(i)
+DFS Procedure (dfs(v))
+Mark vertex v as visited
+For every adjacent vertex u of v
+If u is not visited, recursively call dfs(u)
+After visiting all neighbors, add v to topo list
+Reverse the Topological List
+Reverse the topo list to obtain correct topological order
+Return Result
+Return the reversed topo list
+
+Solution 
+
+class Solution {
+    public void dfs(ArrayList<ArrayList<Integer>> adj , boolean vis[] , ArrayList<Integer> topo , int v)
+    {
+        vis[v]=true;
+        for(int i:adj.get(v))
+        {
+            if(!vis[i])
+                dfs(adj,vis,topo,i);
+        }
+        topo.add(v);
+    }
+    public ArrayList<Integer> topoSort(int V, int[][] edges) {
+        ArrayList<ArrayList<Integer>> adj =new ArrayList<>();
+        for(int i=0;i<V;i++)
+        {
+            adj.add(new ArrayList<>());
+        }
+        for(int[] edge: edges){
+            adj.get(edge[0]).add(edge[1]);
+        }
+        
+        boolean vis[] = new boolean[V];
+        ArrayList<Integer> topo = new ArrayList<>();
+        for(int i=0;i<V;i++)
+        {
+            if(!vis[i])
+                dfs(adj,vis,topo,i);
+        }
+        Collections.reverse(topo);
+        return topo;
+    }
+}
+--------------------------------------------------
+Time & Space Complexity
+
+Time: O(V + E)
+Space: O(V) (visited array + recursion stack)
+--------------------------------------------------
