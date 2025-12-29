@@ -1,0 +1,62 @@
+Undirected Graph Cylce(DFS)
+
+Given an undirected graph with V vertices and E edges, represented as a 2D vector edges[][], where each entry edges[i] = [u, v] denotes an edge between vertices u and v, determine whether the graph contains a cycle or not.
+Note: The graph can have multiple component.
+
+1️⃣ Build Adjacency List
+Create an adjacency list adj of size V
+For each edge (u, v):
+  Add v to adj[u]
+  Add u to adj[v]
+2️⃣ Initialize Visited Array
+Create a boolean array vis[V] and initialize all values to false
+3️⃣ Traverse All Components
+For each vertex i from 0 to V-1:
+  If vis[i] is false, start DFS from vertex i with parent = -1
+  If DFS returns true, a cycle is detected → return true
+4️⃣ DFS Procedure (dfs(v, parent))
+Mark the current vertex v as visited
+For every adjacent vertex neighbour of v:
+  If neighbour is not visited:
+    Recursively call dfs(neighbour, v)
+    If recursion returns true, propagate true
+  Else if neighbour ≠ parent:
+    A cycle is detected → return true
+  If all neighbors are processed without detecting a cycle, return false
+5️⃣ Final Result
+If no cycle is detected in any component, return false
+
+Solution
+
+class Solution {
+    public boolean dfs(ArrayList<ArrayList<Integer>> adj, boolean[] vis, int v,int parent) {
+        vis[v]=true;
+        for(int neighbour:adj.get(v)){
+            if(!vis[neighbour]){
+                if(dfs(adj,vis,neighbour,v))
+                    return true;
+                }
+                else if(neighbour!=parent){
+                    return true;
+            }
+        }
+        return false;
+    }
+    public boolean isCycle(int V, int[][] edges) {
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int[] edge : edges) {
+            adj.get(edge[0]).add(edge[1]);
+            adj.get(edge[1]).add(edge[0]);
+        }
+        boolean[] vis = new boolean[V];
+        for (int i = 0; i < V; i++) {
+            if (!vis[i] && dfs(adj, vis, i,-1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
