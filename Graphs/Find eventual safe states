@@ -3,3 +3,46 @@ Leetcode 802.Find Eventual Safe States
 There is a directed graph of n nodes with each node labeled from 0 to n - 1. The graph is represented by a 0-indexed 2D integer array graph where graph[i] is an integer array of nodes adjacent to node i, meaning there is an edge from node i to each node in graph[i].
 A node is a terminal node if there are no outgoing edges. A node is a safe node if every possible path starting from that node leads to a terminal node (or another safe node).
 Return an array containing all the safe nodes of the graph. The answer should be sorted in ascending order.
+
+Solution 
+class Solution {
+    public ArrayList<Integer> bfs(ArrayList<ArrayList<Integer>> adj , int indegree[],ArrayList<Integer> topo){
+        Queue<Integer> q = new LinkedList<>();
+        for(int i=0;i<indegree.length;i++)
+        {
+            if(indegree[i]==0)
+                q.add(i);
+        }
+        while(!q.isEmpty())
+        {
+            int x = q.poll();
+            for(int i:adj.get(x))
+            {
+                indegree[i]--;
+                if(indegree[i]==0)
+                    q.add(i);
+            }
+            topo.add(x);
+        }
+        return topo;
+    }
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        int n = graph.length;
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        int[] indegree = new int[n];
+        for(int i=0;i<n;i++)
+            adj.add(new ArrayList<>());
+        for(int i=0;i<n;i++)
+        {
+            for(int v:graph[i])
+            {
+                adj.get(v).add(i);
+                indegree[i]++;
+            }
+        }
+        ArrayList<Integer> topo = new ArrayList<>();
+        topo = bfs(adj,indegree,topo);
+        Collections.sort(topo);
+        return topo;
+    }
+}
