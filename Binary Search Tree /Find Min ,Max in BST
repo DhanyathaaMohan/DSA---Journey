@@ -1,0 +1,32 @@
+Find the Minimum and Maximum in a BST 
+
+Key Idea
+Because of the BST property:
+  Minimum value → found at the leftmost node
+  Maximum value → found at the rightmost node
+
+Minimum in BST 
+int findMin(Node root) {
+    if (root == null) return -1; 
+    while (root.left != null) {
+        root = root.left;
+    }
+    return root.val;
+}
+
+Maximum in BST 
+int findMax(Node root) {
+    if (root == null) return -1;
+    while (root.right != null) {
+        root = root.right;
+    }
+    return root.val;
+}
+
+-------------------------------------------------------------
+Time & Space Complexity
+Operation	  Time Complexity	  Space Complexity
+Find Min	      O(h)	              O(1)
+Find Max	      O(h)	              O(1)
+-------------------------------------------------------------
+
