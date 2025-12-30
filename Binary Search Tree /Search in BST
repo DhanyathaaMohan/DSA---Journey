@@ -1,1 +1,51 @@
+Leetcode 700.Search in Binary Search Tree 
 
+You are given the root of a binary search tree (BST) and an integer val.
+Find the node in the BST that the node's value equals val and return the subtree rooted with that node. If such a node does not exist, return null.
+
+A Binary Search Tree (BST) is a special type of binary tree with an ordering property that makes searching efficient.
+BST Property
+  For every node:
+    Left subtree → values less than the node
+    Right subtree → values greater than the node
+
+Solution
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode searchBST(TreeNode root, int val) {
+        if(root==null)
+            return null;
+        if(val==root.val)
+            return root;
+        else if(val<root.val)
+            return searchBST(root.left,val);
+        else
+            return searchBST(root.right,val);
+    }
+}
+------------------------------------------------------------------------------
+Time & Space ComplexityTime Complexity (TC)
+Average case: O(log n)
+→ When the BST is balanced, each comparison cuts the tree in half.
+Worst case: O(n)
+→ When the BST is skewed (like a linked list).
+
+Space Complexity (SC)
+Recursive Search
+Average: O(log n) (call stack for balanced tree)
+Worst: O(n) (skewed tree)
+--------------------------------------------------------------------------------
