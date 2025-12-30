@@ -1,0 +1,35 @@
+Ceil in BST 
+
+You are given a root binary search tree and an integer x . Your task is to find the Ceil of x in the tree.
+Note: Ceil(x) is a number that is either equal to x or is immediately greater than x.
+If Ceil could not be found, return -1.
+
+Solution
+/* class Node {
+    int data;
+    Node left, right;
+
+    Node(int data) {
+        this.data = data;
+        left = right = null;
+    }
+} */
+
+class Solution {
+    int findCeil(Node root, int x) {
+        int ceil = -1;
+        while(root!=null)
+        {
+            if(root.data==x)
+                return  x;
+            else if(x<root.data)
+            {
+                ceil=root.data;
+                root = root.left;
+            }
+            else
+                root = root.right;
+        }
+        return ceil;
+    }
+}
